@@ -10,7 +10,8 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
-set $rofi "rofi -show run -width 1920 -color-window '#000000' -location 0 -lines 14 -bw 0 -font 'Lato 14' -padding 300 -separator-style none -opacity 90 -color-normal '#000000,#ffffff,#000000,#222222,#ffffff' -line-margin 10 -hide-scrollbar"
+set $rofi-run "rofi -show run -width 1920 -color-window '#e6171717' -location 0 -lines 14 -bw 0 -font 'Lato 14' -padding 400 -separator-style none  -color-normal '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -color-active '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -line-margin 10 -hide-scrollbar"
+set $rofi-window "rofi -show window -width 1920 -color-window '#e6171717' -location 0 -lines 14 -bw 0 -font 'Lato 14' -padding 470 -separator-style none  -color-normal '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -color-active '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -line-margin 10 -hide-scrollbar"
 
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -33,8 +34,8 @@ bindsym $mod+Return exec termite
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start dmenu (a program launcher)
-bindsym $mod+d exec $rofi
+bindsym $mod+d exec $rofi-run
+bindsym $mod+Tab exec $rofi-window
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -74,7 +75,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+bindsym $mod+s layout stacked
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -88,7 +89,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # lock the screen
-bindsym --release $mod+Control+l exec i3lock-fancy
+bindsym --release $mod+Control+l exec xautolock -locknow
 bindsym --release $mod+Control+s exec systemctl suspend
 
 # move to left/right workspace
@@ -123,6 +124,9 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
+bindsym $mod+Shift+Right move workspace to output right
+bindsym $mod+Shift+Left move workspace to output right
+
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -156,38 +160,46 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Start network-manager
-exec --no-startup-id nm-applet
-
 # volume
-bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
+bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
 # granular volume control
-bindsym $mod+XF86AudioRaiseVolume exec amixer -D pulse sset Master 1%+ && pkill -RTMIN+1 i3blocks
-bindsym $mod+XF86AudioLowerVolume exec amixer -D pulse sset Master 1%- && pkill -RTMIN+1 i3blocks
+bindsym $mod+XF86AudioRaiseVolume exec amixer -D pulse sset Master 1%+
+bindsym $mod+XF86AudioLowerVolume exec amixer -D pulse sset Master 1%-
 # mute
-bindsym XF86AudioMute exec amixer sset Master toggle && killall -USR1 i3blocks
+bindsym XF86AudioMute exec amixer sset Master toggle
 
 # music controls
-bindsym XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioPlay exec mpc toggle
+bindsym XF86AudioNext exec mpc next
+bindsym XF86AudioPrev exec mpc prev
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
+bindsym XF86MonBrightnessUp exec light -A 5% # increase screen brightness
+bindsym XF86MonBrightnessDown exec light -U 5% # decrease screen brightness
 
 #gaps
 smart_gaps on
 smart_borders on
 gaps inner 10
-gaps outer 0
+gaps outer 2
 new_window pixel 0
 
+# Apps workspace config
+for_window [window_role="pop-up"] floating enable
+assign [class="Google-chrome"] 2
+assign [class="Emacs"] 3
+assign [class="Slack"] 4
+assign [class="Rambox"] 5
+
+# Start nm and stuff
 exec --no-startup-id compton --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc --shadow-exclude "! name~=''" --config ~/.config/compton.conf -b
 exec --no-startup-id nitrogen --restore
-exec --no-startup-id xautolock -time 3 -locker /usr/bin/i3lock-fancy -corners '--00'
-exec --no-startup-id xss-lock -- /usr/bin/i3lock-fancy
+exec --no-startup-id xautolock -time 2 -locker /home/hiemanshu/bin/lock -corners '--00' -detectsleep
+exec --no-startup-id xss-lock -- /home/hiemanshu/bin/lock
 exec --no-startup-id dunst
+exec --no-startup-id nm-applet
+exec --no-startup-id /home/hiemanshu/bin/start-synergy
 
 exec_always --no-startup-id ~/.config/polybar/run.sh
+
