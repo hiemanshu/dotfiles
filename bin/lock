@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ShantyLocker -x -o /tmp/lock.png
+i3lock -i /tmp/lock.png -n -e

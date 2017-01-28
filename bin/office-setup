@@ -1,0 +1,6 @@
+#!/bin/bash
+
+xrandr --output eDP-1 --auto --output DP-1 --auto --rotate normal --right-of eDP-1
+start-synergy
+~/.config/polybar/run.sh
+nitrogen --restore
