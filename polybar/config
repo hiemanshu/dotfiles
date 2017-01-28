@@ -17,12 +17,12 @@ cyan = #757978
 white = #b2a191
 gray = #4a4a47
 
-[bar/Bar]
+[bar/top]
 monitor = ${env:MONITOR:eDP-1}
 bottom = false
 wm-restack = i3
 width = 100%
-height = 28
+height = 24
 
 enable-ipc = true
 
@@ -33,20 +33,48 @@ module-margin-right = 2
 module-margin-left = 2
 
 modules-center = i3
-modules-left = backlight mpd
-modules-right = volume cpu memory temperature wlan battery date menu0
+modules-left = xwindow
+modules-right = cpu memory temperature battery date menu0
 
 background = ${colors.bg}
 foreground = ${colors.fg}
 
-underline-size = 4
+underline-size = 2
+underline-color = ${colors.white}
+
+font-0 = Lato:size=10;0
+font-1 = FontAwesome:size=12;0
+
+[bar/bottom]
+monitor = ${env:MONITOR:eDP-1}
+wm-restack = i3
+width = 100%
+height = 24
+bottom = true
+
+enable-ipc = true
+
+padding-left = 1
+padding-right = 1
+
+module-margin-right = 2
+module-margin-left = 2
+
+modules-center =
+modules-left = volume mpd
+modules-right = wifi-down wifi-up wlan
+
+background = ${colors.bg}
+foreground = ${colors.fg}
+
+underline-size = 2
 underline-color = ${colors.white}
 
 tray-detached = false
 tray-position = right
 tray-offset-x = 0
 tray-offset-y = 0
-tray-maxsize = 24
+tray-maxsize = 22
 tray-padding = 2
 
 font-0 = Lato:size=10;0
@@ -55,7 +83,7 @@ font-1 = FontAwesome:size=12;0
 [module/xwindow]
 type = internal/xwindow
 label = %title%
-label-maxlen = 30
+label-maxlen = 75
 
 [module/weather]
 type = custom/script
@@ -179,7 +207,7 @@ ramp-coreload-underline = ${colors.red}
 
 type = internal/cpu
 interval = 2
-label = %{F${colors.white}  %percentage% %{F-}
+label = %{F${colors.white}  %percentage%% %{F-}
 label-underline = ${colors.red}
 padding= 2
 
@@ -187,9 +215,27 @@ padding= 2
 type = internal/memory
 interval = 2
 
-label = %{F${colors.white}  %percentage_used% %{F-}
+label = %{F${colors.white}  %percentage_used% % %{F-}
 label-underline = ${colors.magenta}
 label-foreground = ${colors.white}
+
+[module/wifi-up]
+type = internal/network
+interface = wlp1s0
+interval = 3.0
+
+format-connection = <label-connected>
+format-connected-underline = ${colors.red}
+label-connected =  %upspeed%
+
+[module/wifi-down]
+type = internal/network
+interface = wlp1s0
+interval = 3.0
+
+format-connection = <label-connected>
+format-connected-underline = ${colors.green}
+label-connected =  %downspeed%
 
 [module/wlan]
 type = internal/network
