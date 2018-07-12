@@ -10,8 +10,8 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
-set $rofi-run "rofi -show run -width 1920 -color-window '#e6171717' -location 0 -lines 14 -bw 0 -font 'Lato 14' -padding 400 -separator-style none  -color-normal '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -color-active '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -line-margin 10 -hide-scrollbar"
-set $rofi-window "rofi -show window -width 1920 -color-window '#e6171717' -location 0 -lines 14 -bw 0 -font 'Lato 14' -padding 470 -separator-style none  -color-normal '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -color-active '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -line-margin 10 -hide-scrollbar"
+set $rofi-run "rofi -show run -width 1920 -color-window '#e6171717' -location 0 -lines 14 -bw 0 -font 'Lato 14' -padding 400 -separator-style none  -color-normal '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -color-active '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -line-margin 10 -hide-scrollbar -show-icons true"
+set $rofi-window "rofi -show window -width 1920 -color-window '#e6171717' -location 0 -lines 14 -bw 0 -font 'Lato 14' -padding 470 -separator-style none  -color-normal '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -color-active '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -line-margin 10 -hide-scrollbar -show-icons true"
 
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -160,6 +160,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+bindsym $mod+Shift+p exec pavucontrol
+
 # volume
 bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
 bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
@@ -170,9 +172,13 @@ bindsym $mod+XF86AudioLowerVolume exec amixer -D pulse sset Master 1%-
 bindsym XF86AudioMute exec amixer sset Master toggle
 
 # music controls
-bindsym XF86AudioPlay exec mpc toggle
-bindsym XF86AudioNext exec mpc next
-bindsym XF86AudioPrev exec mpc prev
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+bindcode 200 exec playerctl play-pause
+bindcode 163 exec playerctl next
+bindcode 165 exec playerctl previous
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec light -A 5% # increase screen brightness
@@ -186,19 +192,25 @@ gaps outer 2
 new_window pixel 0
 
 # Apps workspace config
+for_window [class="zoom"] floating enable
 for_window [window_role="pop-up"] floating enable
 assign [class="Google-chrome"] 2
 assign [class="Emacs"] 3
 assign [class="Slack"] 4
 assign [class="Rambox"] 5
+assign [class="Spotify"] 6
+assign [class="spotify"] 6
+assign [class="Mailspring"] 7
+assign [class="zoom"] 9
 
 # Start nm and stuff
 exec --no-startup-id compton --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc --shadow-exclude "! name~=''" --config ~/.config/compton.conf -b
 exec --no-startup-id nitrogen --restore
-exec --no-startup-id xautolock -time 2 -locker /home/hiemanshu/bin/lock -corners '--00' -detectsleep
+exec --no-startup-id xautolock -time 1 -locker /home/hiemanshu/bin/lock -corners '--00' -detectsleep
 exec --no-startup-id xss-lock -- /home/hiemanshu/bin/lock
 exec --no-startup-id dunst
 exec --no-startup-id nm-applet
+exec --no-startup-id blueman-applet
 exec --no-startup-id /home/hiemanshu/bin/start-synergy
 
 exec_always --no-startup-id ~/.config/polybar/run.sh
