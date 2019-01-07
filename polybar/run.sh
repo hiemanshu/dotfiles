@@ -7,5 +7,5 @@ killall -q polybar
 while pgrep -x polybar >/dev/null; do sleep 1; done
 
 # Launch bar1 and bar2
-polybar top &
-polybar bottom &
+mon=${1:-eDP-1}
+MONITOR=$mon polybar top &

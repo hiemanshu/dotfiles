@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+disconnected="睊"
+disconnected2="睊"
+wireless_connected="直"
+ethernet_connected="囹"
+
+ID="$(ip link | awk '/state UP/ {print $2}')"
+WIFI_NAME="$(nmcli device show wlp1s0 | grep 'GENERAL.CONNECTION:' | awk '{print $2}')"
+
+if (ping -c 1 google.com || ping -c 1 8.8.8.8 || ping -c 1 1.1.1.1) &>/dev/null; then
+    if [[ $ID == e* ]]; then
+        echo "$ethernet_connected"
+    else
+        echo "$wireless_connected $WIFI_NAME"
+    fi
+else
+    echo "$disconnected"
+    echo "$disconnected2"
+fi

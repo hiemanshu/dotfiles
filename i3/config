@@ -10,9 +10,8 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
-set $rofi-run "rofi -show run -width 1920 -color-window '#e6171717' -location 0 -lines 14 -bw 0 -font 'Lato 14' -padding 400 -separator-style none  -color-normal '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -color-active '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -line-margin 10 -hide-scrollbar -show-icons true"
-set $rofi-window "rofi -show window -width 1920 -color-window '#e6171717' -location 0 -lines 14 -bw 0 -font 'Lato 14' -padding 470 -separator-style none  -color-normal '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -color-active '#00171717,#ffb2a191,#00171717,#00171717,#ff707d22' -line-margin 10 -hide-scrollbar -show-icons true"
-
+set $rofi-run "rofi -show run"
+set $rofi-window "rofi -show window"
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -185,9 +184,8 @@ bindsym XF86MonBrightnessUp exec light -A 5% # increase screen brightness
 bindsym XF86MonBrightnessDown exec light -U 5% # decrease screen brightness
 
 #gaps
-smart_gaps on
 smart_borders on
-gaps inner 10
+gaps inner 5
 gaps outer 2
 new_window pixel 0
 
@@ -200,13 +198,13 @@ assign [class="Slack"] 4
 assign [class="Rambox"] 5
 assign [class="Spotify"] 6
 assign [class="spotify"] 6
-assign [class="Mailspring"] 7
+assign [class="Thunderbird"] 7
 assign [class="zoom"] 9
 
 # Start nm and stuff
 exec --no-startup-id compton --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc --shadow-exclude "! name~=''" --config ~/.config/compton.conf -b
 exec --no-startup-id nitrogen --restore
-exec --no-startup-id xautolock -time 1 -locker /home/hiemanshu/bin/lock -corners '--00' -detectsleep
+exec --no-startup-id xautolock -time 10 -locker /home/hiemanshu/bin/lock -corners '----' -detectsleep
 exec --no-startup-id xss-lock -- /home/hiemanshu/bin/lock
 exec --no-startup-id dunst
 exec --no-startup-id nm-applet

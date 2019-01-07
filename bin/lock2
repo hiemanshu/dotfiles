@@ -1,0 +1,7 @@
+image="/tmp/screen.png"
+
+ffmpeg -loglevel quiet -f x11grab -video_size 1920x1080 -y -i $DISPLAY -filter_complex "boxblur=10,overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2" -vframes 1 $image
+
+feh "$image" &
+i3lock "${param[@]}" -i "$image" -n
+sleep 0.05 ; killall feh
