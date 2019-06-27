@@ -1,6 +1,6 @@
 #!/bin/bash
 
-xrandr --output eDP-1 --off --output DP-1 --auto
+xrandr --output eDP-1 --off --output DP-1 --auto --output DP-2 --auto --above DP-1
 start-synergy
 ~/.config/polybar/run.sh DP-1
 nitrogen --restore
